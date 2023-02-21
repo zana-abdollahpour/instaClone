@@ -7,18 +7,21 @@ import {
   BookmarkIcon,
   FaceSmileIcon,
 } from "@heroicons/react/24/outline";
+import Image from "next/image";
+
+import userPhoto from "../../../assets/img/users/user-zana.jpg";
 
 export default function Post(props) {
   return (
-    <div className="bg-white my-6 border rounded-md">
+    <div className="my-6 bg-white border rounded-md">
       {/* Post Header */}
       <div className="flex items-center p-5">
-        <img
-          className="h-12 rounded-full object-cover brder p-[2px] mr-3"
-          src={props.userImg}
+        <Image
+          className="h-12 w-12 rounded-full object-cover brder p-[2px] mr-3"
+          src={userPhoto}
           alt={props.username + "'s profile image"}
         />
-        <span className="block font-bold flex-1">{props.username}</span>
+        <span className="flex-1 block font-bold">{props.username}</span>
         <EllipsisHorizontalIcon className="h-5" />
       </div>
 
@@ -40,17 +43,17 @@ export default function Post(props) {
 
       {/* Post Comments */}
       <p className="p-5 truncate ">
-        <span className="font-bold mr-2">{props.username}</span>
+        <span className="mr-2 font-bold">{props.username}</span>
         {props.caption}
       </p>
       <form className="flex items-center p-4">
         <FaceSmileIcon className="h-7" />
         <input
-          className="border-none flex-1 focus:ring-0"
+          className="flex-1 border-none focus:ring-0"
           type="text"
           placeholder="add your comment..."
         />
-        <button className="text-blue-400 font-bold">Post</button>
+        <button className="font-bold text-blue-400">Post</button>
       </form>
     </div>
   );
