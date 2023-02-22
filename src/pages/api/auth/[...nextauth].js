@@ -22,7 +22,7 @@ export const authOptions = {
     async session({ session, token, user }) {
       session.user.username = session.user.name
         .split(" ")
-        .join("")
+        .join("_")
         .toLocaleLowerCase();
       session.user.uid = token.sub;
       return session;

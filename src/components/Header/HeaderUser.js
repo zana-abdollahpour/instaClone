@@ -1,5 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
-import Image from "next/image";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { HomeIcon } from "@heroicons/react/24/solid";
 import { useSession, signIn, signOut } from "next-auth/react";
@@ -23,7 +23,7 @@ export default function HeaderUser() {
             }}
             className="h-6 transition-transform duration-200 ease-in curpointer hover:scale-110"
           />
-          <Image
+          <img
             onClick={signOut}
             src={session.user.image}
             alt="User's photo"
