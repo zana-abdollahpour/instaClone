@@ -17,26 +17,27 @@ export default function signin(props) {
           alt="Signin Image"
         />
         <div>
-          {Object.values(props.providers).map((provider) => (
-            <div key={provider.name} className="flex flex-col items-center">
-              <Image
-                className="object-cover w-32 "
-                src={signinIgLogo}
-                alt="Instagram's Logo"
-              />
-              <p className="my-10 text-sm italic text-center">
-                IMPORTANT!
-                <br /> This app is created for <strong>Learning</strong>
-                &nbsp;Purposes only.
-              </p>
+          <div className="flex flex-col items-center">
+            <Image
+              className="object-cover w-32 "
+              src={signinIgLogo}
+              alt="Instagram's Logo"
+            />
+            <p className="my-10 text-sm italic text-center">
+              IMPORTANT!
+              <br /> This app is created for <strong>Learning</strong>
+              &nbsp;Purposes only.
+            </p>
+            {Object.values(props.providers).map((provider) => (
               <button
-                className="p-3 text-white transition-transform duration-150 bg-red-400 rounded-xl hover:bg-red-500"
+                key={provider.name}
+                className="p-3 mb-2 text-white transition-transform duration-150 bg-red-400 rounded-xl hover:bg-red-500"
                 onClick={() => signIn(provider.id, { callbackUrl: "/" })}
               >
-                Sign in With Google
+                Sign in With {provider.name}
               </button>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </>

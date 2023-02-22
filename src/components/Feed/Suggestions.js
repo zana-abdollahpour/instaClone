@@ -28,7 +28,7 @@ export default function Suggestions() {
           className="flex items-center justify-between mt-3"
         >
           <img
-            className="h-10 rounded-full border p-[2px]"
+            className="h-10 w-10 rounded-full border p-[2px]"
             src={`https://i.pravatar.cc/150?img=${Math.ceil(
               Math.random() * 70
             )}`}

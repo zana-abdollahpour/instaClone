@@ -4,11 +4,22 @@ import { modalState } from "atom/modalAtom";
 import Modal from "react-modal";
 import { CameraIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import { addDoc, collection } from "firebase/firestore";
 
 export default function UploadModal() {
   const [open, setOpen] = useRecoilState(modalState);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [loading, setLoading] = useState(false);
   const filePickerRef = useRef(null);
+  const captionRef = useRef(null);
+
+  const uploadPost = async function () {
+    if (loading) return;
+    setLoading(true);
+    const docRef = await addDoc(collection(db, "posts"), {
+      caption: captionRef.current.value,
+    });
+  };
 
   const addImageToPost = function (e) {
     const reader = new FileReader();
@@ -56,9 +67,11 @@ export default function UploadModal() {
               type="text"
               maxLength="150"
               placeholder="Your caption..."
+              ref={captionRef}
             />
             <button
-              disabled
+              disabled={!selectedFile || loading}
+              onClick={uploadPost}
               className="w-full p-2 text-white bg-red-600 shadow-md hover:brightness-125 disabled:bg-gray-200 disabled:cursor-not-allowed disabled:hover:brightness-100 "
             >
               Upload Post
