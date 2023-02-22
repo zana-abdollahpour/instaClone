@@ -1,16 +1,25 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { modalState } from "../../../atom/modalAtom";
 import Modal from "react-modal";
 import { CameraIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
-import { addDoc, collection } from "firebase/firestore";
-import { db } from "../../../firebase";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
+import { db, storage } from "../../../firebase";
+import { useSession } from "next-auth/react";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
 
 export default function UploadModal() {
   const [open, setOpen] = useRecoilState(modalState);
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { data: session } = useSession();
   const filePickerRef = useRef(null);
   const captionRef = useRef(null);
 
@@ -19,7 +28,23 @@ export default function UploadModal() {
     setLoading(true);
     const docRef = await addDoc(collection(db, "posts"), {
       caption: captionRef.current.value,
+      username: session.user.username,
+      profileImg: session.user.image,
+      timestamp: serverTimestamp(),
     });
+
+    const imageRef = ref(storage, `posts/${docRef.id}/image`);
+    await uploadString(imageRef, selectedFile, "data_url").then(
+      async (snapshot) => {
+        const downloadURL = await getDownloadURL(imageRef);
+        await updateDoc(doc(db, "posts", docRef.id), {
+          image: downloadURL,
+        });
+      }
+    );
+    setOpen(false);
+    setLoading(false);
+    setSelectedFile(null);
   };
 
   const addImageToPost = function (e) {
@@ -28,14 +53,14 @@ export default function UploadModal() {
       reader.readAsDataURL(e.target.files[0]);
     }
     reader.onload = (readerEvent) => {
-      selectedFile(readerEvent.target.result);
+      setSelectedFile(readerEvent.target.result);
     };
   };
   return (
     <div>
       {open && (
         <Modal
-          className="max-w-lg w-[90%] p-6 absolute top-56 left-[50%] translate-x-[-50%] bg-white border-2 rounded-lg shadow-md"
+          className="max-w-lg w-[90%] p-6 absolute top-48 left-[50%] translate-x-[-50%] bg-white border-2 rounded-lg shadow-md"
           isOpen={open}
           onRequestClose={() => {
             setOpen(false);
@@ -44,11 +69,11 @@ export default function UploadModal() {
         >
           <div className="flex flex-col items-center justify-center h-[100%]">
             {selectedFile ? (
-              <Image
+              <img
                 onClick={() => setSelectedFile(null)}
                 src={selectedFile}
                 alt="uploaded photo"
-                className="object-cover w-full cursor-pointer max-h-64"
+                className="object-contain w-full cursor-pointer max-h-64"
               />
             ) : (
               <CameraIcon
