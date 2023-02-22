@@ -53,7 +53,7 @@ export default function UploadModal() {
             ) : (
               <CameraIcon
                 onClick={() => filePickerRef.current.click()}
-                className="p-2 text-red-500 transition-transform duration-150 bg-red-200 border-2 rounded-full cursor-pointer hover:scale-110"
+                className="h-16 p-2 text-red-500 transition-transform bg-red-200 border-2 rounded-full cursor-pointer duration-250 hover:scale-110"
               />
             )}
 
