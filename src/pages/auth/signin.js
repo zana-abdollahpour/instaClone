@@ -31,7 +31,13 @@ export default function signin(props) {
             {Object.values(props.providers).map((provider) => (
               <button
                 key={provider.name}
-                className="p-3 mb-2 text-white transition-transform duration-150 bg-red-400 rounded-xl hover:bg-red-500"
+                className={`p-3 mb-2 text-white transition-transform duration-150 rounded-xl ${
+                  provider.name === "Google"
+                    ? "hover:bg-red-500 bg-red-400"
+                    : provider.name === "GitHub"
+                    ? "hover:bg-gray-500 bg-gray-400"
+                    : ""
+                }`}
                 onClick={() => signIn(provider.id, { callbackUrl: "/" })}
               >
                 Sign in With {provider.name}
