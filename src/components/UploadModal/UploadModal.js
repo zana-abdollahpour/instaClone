@@ -1,10 +1,11 @@
 import React, { useRef, useState } from "react";
 import { useRecoilState } from "recoil";
-import { modalState } from "atom/modalAtom";
+import { modalState } from "../../../atom/modalAtom";
 import Modal from "react-modal";
 import { CameraIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { addDoc, collection } from "firebase/firestore";
+import { db } from "../../../firebase";
 
 export default function UploadModal() {
   const [open, setOpen] = useRecoilState(modalState);

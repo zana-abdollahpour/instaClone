@@ -4,7 +4,7 @@ import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { HomeIcon } from "@heroicons/react/24/solid";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRecoilState } from "recoil";
-import { modalState } from "atom/modalAtom";
+import { modalState } from "../../../atom/modalAtom";
 
 // import userPhoto from "../../assets/img/users/user-zana.jpg";
 
