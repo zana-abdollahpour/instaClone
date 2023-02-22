@@ -3,6 +3,7 @@ import { Inter } from "@next/font/google";
 
 import Header from "@/components/Header/Header";
 import Feed from "@/components/Feed/Feed";
+import UploadModal from "@/components/UploadModal/UploadModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +24,7 @@ export default function Home() {
       <Feed />
 
       {/* Modal */}
+      <UploadModal />
     </div>
   );
 }
