@@ -15,7 +15,7 @@ export default function HeaderLogo() {
           onClick={() => router.push("/")}
           alt="instagram typed logo"
           src={typedLogo}
-          className="object-contain"
+          className="object-contain transition-transform duration-300 hover:border-b-2"
         />
       </div>
       <div className="relative flex items-center w-10 h-24 cursor-pointer lg:hidden">
@@ -23,7 +23,7 @@ export default function HeaderLogo() {
           onClick={() => router.push("/")}
           alt="instagram typed logo"
           src={imgLogo}
-          className="object-contain"
+          className="object-contain transition-transform duration-300 hover:border-b-2"
         />
       </div>
     </>

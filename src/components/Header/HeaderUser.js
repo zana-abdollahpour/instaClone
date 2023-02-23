@@ -27,7 +27,7 @@ export default function HeaderUser() {
             onClick={signOut}
             src={session.user.image}
             alt="User's photo"
-            className="w-10 h-10 rounded-full cursor-pointer"
+            className="w-10 h-10 rounded-full cursor-pointer hover:opacity-80"
           />
         </>
       ) : (
