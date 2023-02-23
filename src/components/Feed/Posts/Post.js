@@ -16,6 +16,9 @@ import {
   orderBy,
   query,
   serverTimestamp,
+  setDoc,
+  doc,
+  deleteDoc,
 } from "firebase/firestore";
 import Moment from "react-moment";
 
@@ -26,6 +29,8 @@ export default function Post(props) {
   const { data: session } = useSession();
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
+  const [hasLiked, setHasLiked] = useState(false);
+  const [likes, setLikes] = useState([]);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -38,6 +43,29 @@ export default function Post(props) {
       }
     );
   }, [db, props.id]);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      collection(db, "posts", props.id, "likes"),
+      (snapshot) => setLikes(snapshot.docs)
+    );
+  }, [db]);
+
+  useEffect(() => {
+    setHasLiked(
+      likes.findIndex((like) => like.id === session?.user.uid) !== -1
+    );
+  }, [likes]);
+
+  async function likePost() {
+    if (hasLiked) {
+      await deleteDoc(doc(db, "posts", props.id, "likes", session.user.uid));
+    } else {
+      await setDoc(doc(db, "posts", props.id, "likes", session.user.uid), {
+        username: session.user.username,
+      });
+    }
+  }
 
   async function sendComment(e) {
     e.preventDefault();
@@ -75,7 +103,14 @@ export default function Post(props) {
       {session && (
         <div className="flex justify-between px-4 pt-4">
           <div className="flex space-x-4">
-            <HeartIcon className="post--btn" />
+            {hasLiked ? (
+              <HeartIcon
+                onClick={likePost}
+                className="text-red-400 fill-red-400 post--btn"
+              />
+            ) : (
+              <HeartIcon onClick={likePost} className="post--btn" />
+            )}
             <ChatBubbleOvalLeftIcon className="post--btn" />
           </div>
           <BookmarkIcon className="post--btn" />
