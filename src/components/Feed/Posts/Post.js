@@ -119,6 +119,11 @@ export default function Post(props) {
 
       {/* Post Comments */}
       <p className="p-5 truncate ">
+        {likes.length > 0 && (
+          <p className="mb-1 font-bold">
+            {likes.length > 1 ? `${likes.length} likes` : "1 like"}
+          </p>
+        )}
         <span className="mr-2 font-bold">{props.username}</span>
         {props.caption}
       </p>
