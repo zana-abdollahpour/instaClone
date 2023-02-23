@@ -8,10 +8,13 @@ import {
   FaceSmileIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 import userPhoto from "../../../assets/img/users/user-zana.jpg";
 
 export default function Post(props) {
+  const { data: session } = useSession();
+
   return (
     <div className="my-6 bg-white border rounded-md">
       {/* Post Header */}
@@ -33,28 +36,32 @@ export default function Post(props) {
       />
 
       {/* Post Buttons */}
-      <div className="flex justify-between px-4 pt-4">
-        <div className="flex space-x-4">
-          <HeartIcon className="post--btn" />
-          <ChatBubbleOvalLeftIcon className="post--btn" />
+      {session && (
+        <div className="flex justify-between px-4 pt-4">
+          <div className="flex space-x-4">
+            <HeartIcon className="post--btn" />
+            <ChatBubbleOvalLeftIcon className="post--btn" />
+          </div>
+          <BookmarkIcon className="post--btn" />
         </div>
-        <BookmarkIcon className="post--btn" />
-      </div>
+      )}
 
       {/* Post Comments */}
       <p className="p-5 truncate ">
         <span className="mr-2 font-bold">{props.username}</span>
         {props.caption}
       </p>
-      <form className="flex items-center p-4">
-        <FaceSmileIcon className="h-7" />
-        <input
-          className="flex-1 border-none focus:ring-0"
-          type="text"
-          placeholder="add your comment..."
-        />
-        <button className="font-bold text-blue-400">Post</button>
-      </form>
+      {session && (
+        <form className="flex items-center p-4">
+          <FaceSmileIcon className="h-7" />
+          <input
+            className="flex-1 border-none focus:ring-0"
+            type="text"
+            placeholder="add your comment..."
+          />
+          <button className="font-bold text-blue-400">Post</button>
+        </form>
+      )}
     </div>
   );
 }
