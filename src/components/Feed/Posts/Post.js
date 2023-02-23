@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   EllipsisHorizontalIcon,
   HeartIcon,
@@ -8,7 +9,15 @@ import {
   FaceSmileIcon,
 } from "@heroicons/react/24/outline";
 import { useSession } from "next-auth/react";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  serverTimestamp,
+} from "firebase/firestore";
+import Moment from "react-moment";
 
 // import userPhoto from "../../../assets/img/users/user-zana.jpg";
 import { db } from "../../../../firebase";
@@ -16,6 +25,19 @@ import { db } from "../../../../firebase";
 export default function Post(props) {
   const { data: session } = useSession();
   const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      query(
+        collection(db, "posts", props.id, "comments"),
+        orderBy("timestamp", "desc")
+      ),
+      (snapshot) => {
+        setComments(snapshot.docs);
+      }
+    );
+  }, [db, props.id]);
 
   async function sendComment(e) {
     e.preventDefault();
@@ -65,6 +87,24 @@ export default function Post(props) {
         <span className="mr-2 font-bold">{props.username}</span>
         {props.caption}
       </p>
+      {comments.length > 0 && (
+        <div className="mx-10 overflow-y-scroll max-h-24 scrollbar-none">
+          {comments.map((comment) => (
+            <div className="flex items-center mb-2 space-x-2 " key={props.id}>
+              <img
+                className="object-cover rounded-full h-7 w-7"
+                src={comment.data().userImage}
+                alt="user's image"
+              />
+              <span className="block font-semibold ">
+                {comment.data().username}
+              </span>
+              <p className="flex-1 truncate">{comment.data().comment}</p>
+              <Moment fromNow>{comment.data().timestamp?.toDate()}</Moment>
+            </div>
+          ))}
+        </div>
+      )}
       {session && (
         <form className="flex items-center p-4">
           <FaceSmileIcon className="h-7" />
