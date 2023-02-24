@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
-import { useSession, signOut } from "next-auth/react";
+import { useSession, signOut, signIn } from "next-auth/react";
 
 // import userPhoto from "../../assets/img/users/user-zana.jpg";
 
@@ -19,7 +19,10 @@ export default function MiniProfile() {
         <h2 className="font-bold">{session?.user.username}</h2>
         <h3 className="text-sm text-gray-400">Welcome to InstaClone!</h3>
       </div>
-      <button onClick={signOut} className="text-sm font-semibold text-blue-400">
+      <button
+        onClick={session ? signOut : signIn}
+        className="text-sm font-semibold text-blue-400"
+      >
         {session ? "Sign Out" : "Sign In"}
       </button>
     </div>
