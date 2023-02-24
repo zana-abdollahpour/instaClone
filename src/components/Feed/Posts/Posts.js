@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import Post from "./Post";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";

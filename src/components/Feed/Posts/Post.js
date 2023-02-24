@@ -85,7 +85,7 @@ export default function Post(props) {
       <div className="flex items-center p-5">
         <img
           className="h-12 w-12 rounded-full object-cover brder p-[2px] mr-3"
-          src={session.user.image}
+          src={props.userImg}
           alt={props.username + "'s profile image"}
         />
         <span className="flex-1 block font-bold">{props.username}</span>
