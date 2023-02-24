@@ -130,7 +130,10 @@ export default function Post(props) {
       {comments.length > 0 && (
         <div className="mx-10 overflow-y-scroll max-h-24 scrollbar-none">
           {comments.map((comment) => (
-            <div className="flex items-center mb-2 space-x-2 " key={props.id}>
+            <div
+              className="flex items-center mb-2 space-x-2 "
+              key={comment.data().id}
+            >
               <img
                 className="object-cover rounded-full h-7 w-7"
                 src={comment.data().userImage}
